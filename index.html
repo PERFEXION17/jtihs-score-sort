@@ -65,13 +65,31 @@
             placeholder="Subject Name (e.g., Mathematics)"
           />
         </div>
+        <div
+          class="controls"
+          style="
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+          "
+        >
+          <label style="font-weight: 600; white-space: nowrap">Section</label>
+          <select
+            id="calc-section"
+            style="padding: 10px 14px; font-size: 15px; border-radius: 8px"
+          >
+            <option value="SSS">Senior Secondary (SSS)</option>
+            <option value="JSS">Junior Secondary (JSS)</option>
+          </select>
+        </div>
         <div class="calc-grid-header">
           <div style="text-align: left">Student Name</div>
-          <div>A1 (5)</div>
-          <div>A2 (5)</div>
-          <div>T1 (10)</div>
-          <div>T2 (10)</div>
-          <div>EXAM (70)</div>
+          <div>A1</div>
+          <div>A2</div>
+          <div>T1</div>
+          <div>T2</div>
+          <div>EXAM</div>
           <div>TOTAL</div>
           <div></div>
         </div>
@@ -108,6 +126,14 @@
       </div>
 
       <!-- ====================== REPORT GENERATOR TAB ====================== -->
+      <div style="margin: 16px 0">
+        <label style="font-weight: 600; margin-right: 10px">Section</label>
+        <select id="report-section" style="padding: 10px 14px; font-size: 15px">
+          <option value="SSS">Senior Secondary (SSS)</option>
+          <option value="JSS">Junior Secondary (JSS)</option>
+        </select>
+      </div>
+
       <div id="tab-report" class="tab-content hidden">
         <h2>Student Report Generator</h2>
         <div class="bio-data-grid">
@@ -162,11 +188,11 @@
             <thead>
               <tr>
                 <th>SUBJECT</th>
-                <th>ASS 1 (5)</th>
-                <th>ASS 2 (5)</th>
-                <th>TEST 1 (10)</th>
-                <th>TEST 2 (10)</th>
-                <th>EXAMS (70)</th>
+                <th>ASS 1</th>
+                <th>ASS 2</th>
+                <th>TEST 1</th>
+                <th>TEST 2</th>
+                <th>EXAMS</th>
                 <th>CLASS AVG</th>
                 <th>SUBJ POS</th>
               </tr>

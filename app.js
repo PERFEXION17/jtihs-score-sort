@@ -43,6 +43,44 @@ const BEHAVIORS = [
   "POLITENESS",
 ];
 
+// Separate subject lists for JSS and SSS
+const JSS_SUBJECTS = [
+  "Mathematics",
+  "English",
+  "Basic Science",
+  "Basic Technology",
+  "Civic Education",
+  "Social Studies",
+  "CRS",
+  "Cultural and Creative Art",
+  "Business Studies",
+  "Computer Science",
+  "Hausa",
+  "Home Economics",
+  "Physical and Health Education",
+  "Agricultural Science",
+  "Literature-in-English",
+];
+
+const SSS_SUBJECTS = [
+  "Mathematics",
+  "English Language",
+  "Civic Education",
+  "Physics",
+  "Chemistry",
+  "Biology",
+  "Geography",
+  "Accounting",
+  "Economics",
+  "Commerce",
+  "Agriculture",
+  "Creative Art",
+  "Computer",
+  "CRS",
+  "Government",
+  "Literature",
+];
+
 // --- UTILITY FUNCTIONS ---
 function formatName(name) {
   if (!name) return "";
@@ -57,7 +95,6 @@ function normalizeName(name) {
   return name ? name.toLowerCase().trim().replace(/\s+/g, " ") : "";
 }
 
-// Lax subject matching (removes dots, spaces, punctuation)
 function normalizeSubject(subject) {
   return subject ? subject.toLowerCase().replace(/[^a-z0-9]/g, "") : "";
 }
@@ -105,10 +142,8 @@ logoutBtn.addEventListener("click", () => {
   ) {
     dashboardScreen.classList.add("hidden");
     loginScreen.classList.remove("hidden");
-
     document.getElementById("teacher-pin").value = "";
     document.getElementById("school-id").value = "";
-
     tabCalc.classList.remove("hidden");
     tabReport.classList.add("hidden");
     tabBtnCalc.classList.add("active");
@@ -135,6 +170,7 @@ tabBtnReport.addEventListener("click", () => {
 const studentInputsContainer = document.getElementById(
   "student-inputs-container",
 );
+const calcSectionSelect = document.getElementById("calc-section");
 
 document
   .getElementById("add-student-row")
@@ -144,13 +180,15 @@ function addStudentRow(data = {}) {
   const row = document.createElement("div");
   row.className = "student-row";
 
+  const isJSS = calcSectionSelect && calcSectionSelect.value === "JSS";
+
   row.innerHTML = `
     <input type="text" class="calc-name" placeholder="Name" value="${data.name || ""}">
-    <input type="number" class="calc-a1" placeholder="5" value="${data.a1 || ""}" max="5">
-    <input type="number" class="calc-a2" placeholder="5" value="${data.a2 || ""}" max="5">
-    <input type="number" class="calc-t1" placeholder="10" value="${data.t1 || ""}" max="10">
-    <input type="number" class="calc-t2" placeholder="10" value="${data.t2 || ""}" max="10">
-    <input type="number" class="calc-ex" placeholder="70" value="${data.ex || ""}" max="70">
+    <input type="number" class="calc-a1" placeholder="${isJSS ? "10" : "5"}" value="${data.a1 || ""}" max="${isJSS ? "10" : "5"}">
+    <input type="number" class="calc-a2" placeholder="${isJSS ? "10" : "5"}" value="${data.a2 || ""}" max="${isJSS ? "10" : "5"}">
+    <input type="number" class="calc-t1" placeholder="${isJSS ? "20" : "10"}" value="${data.t1 || ""}" max="${isJSS ? "20" : "10"}">
+    <input type="number" class="calc-t2" placeholder="${isJSS ? "20" : "10"}" value="${data.t2 || ""}" max="${isJSS ? "20" : "10"}">
+    <input type="number" class="calc-ex" placeholder="${isJSS ? "40" : "70"}" value="${data.ex || ""}" max="${isJSS ? "40" : "70"}">
     <input type="number" class="calc-total" placeholder="100" value="${data.score || ""}" readonly tabindex="-1">
     <button class="danger-btn remove-row">X</button>
   `;
@@ -170,6 +208,15 @@ function addStudentRow(data = {}) {
     .querySelector(".remove-row")
     .addEventListener("click", () => row.remove());
   studentInputsContainer.appendChild(row);
+}
+
+// Update existing rows when section changes
+if (calcSectionSelect) {
+  calcSectionSelect.addEventListener("change", () => {
+    const rows = document.querySelectorAll(".student-row");
+    rows.forEach((row) => row.remove());
+    loadCalculatorData(); // re-populate with correct maxes
+  });
 }
 
 function getOrdinalSuffix(n) {
@@ -458,8 +505,14 @@ function fillReportTableFromImports(mergedStudents) {
 // --- TAB 2: REPORT GENERATOR ---
 function initReportTab() {
   const tbody = document.getElementById("subjects-input-body");
-  if (tbody.children.length === 0) {
-    SUBJECTS.forEach((sub) => {
+  const sectionSelect = document.getElementById("report-section");
+
+  function populateSubjects() {
+    tbody.innerHTML = ""; // clear existing rows
+    const subjects =
+      sectionSelect.value === "JSS" ? JSS_SUBJECTS : SSS_SUBJECTS;
+
+    subjects.forEach((sub) => {
       tbody.innerHTML += `
         <tr class="report-subject-row" data-subject="${sub}">
           <td>${sub}</td>
@@ -475,6 +528,15 @@ function initReportTab() {
     });
   }
 
+  // Populate on load
+  populateSubjects();
+
+  // Re-populate when section changes
+  if (sectionSelect) {
+    sectionSelect.addEventListener("change", populateSubjects);
+  }
+
+  // Behavior ratings (unchanged)
   const behaviorInputContainer = document.getElementById("behavior-inputs");
   if (behaviorInputContainer && behaviorInputContainer.children.length === 0) {
     BEHAVIORS.forEach((b, index) => {
