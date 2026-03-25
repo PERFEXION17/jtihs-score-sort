@@ -1,0 +1,597 @@
+:root {
+  --color-primary: #1e3a8a;
+  --color-primary-hover: #1e40af;
+  --color-accent: #0ea5e9;
+  --color-secondary: #64748b;
+  --color-secondary-hover: #475569;
+  --color-danger: #ef4444;
+  --color-danger-hover: #dc2626;
+
+  --color-bg-main: #f8fafc;
+  --color-surface: #ffffff;
+
+  --color-text-dark: #0f172a;
+  --color-text-muted: #475569;
+  --color-text-light: #ffffff;
+
+  --font-family-base: "Montserrat", system-ui, sans-serif;
+  --font-family-heading: "Montserrat", system-ui, sans-serif;
+
+  --font-size-base: 16px;
+
+  --border-radius: 8px;
+  --border-width: 1px;
+  --border-color: #e2e8f0;
+
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+
+  --shadow-subtle:
+    0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-medium:
+    0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--color-bg-main);
+  color: var(--color-text-dark);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: 1.6;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.screen-container {
+  padding: var(--spacing-lg);
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* ====================== LOGIN ====================== */
+.login-box {
+  max-width: 420px;
+  margin: 120px auto;
+  padding: 40px;
+  background: var(--color-surface);
+  border-radius: var(--border-radius);
+  border: var(--border-width) solid var(--border-color);
+  box-shadow: var(--shadow-medium);
+  text-align: center;
+}
+
+.login-box h2 {
+  font-family: var(--font-family-heading);
+  color: var(--color-primary);
+  margin-bottom: 32px;
+  border-bottom: none;
+}
+
+/* ====================== DASHBOARD ====================== */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-family-heading);
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-md);
+}
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--color-surface);
+  padding: 4px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-subtle);
+}
+
+.tab-btn {
+  margin: 0;
+  padding: 12px 28px;
+  border: none;
+  border-radius: var(--border-radius);
+  background: transparent;
+  color: var(--color-text-muted);
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.tab-btn.active {
+  margin: 0;
+  background: var(--color-primary);
+  color: white;
+  box-shadow: var(--shadow-subtle);
+}
+
+.tab-content {
+  background: var(--color-surface);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius);
+  border: var(--border-width) solid var(--border-color);
+  box-shadow: var(--shadow-subtle);
+}
+
+/* Bio Data Grid */
+.bio-data-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+/* ====================== INPUT STYLING ====================== */
+input,
+select {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 15px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  background-color: #fff;
+  transition: all 0.2s;
+  font-family: var(--font-family-base);
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+}
+
+/* ====================== CALCULATOR TAB ====================== */
+.calc-grid-header {
+  display: grid;
+  grid-template-columns: 3fr 1fr 1fr 1fr 1fr 1.5fr 1.5fr 48px;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+#subject-name{
+  margin-bottom: 12px;
+}
+
+.student-row {
+  display: grid;
+  grid-template-columns: 3fr 1fr 1fr 1fr 1fr 1.5fr 1.5fr 48px;
+  gap: 8px;
+  margin-bottom: var(--spacing-sm);
+}
+
+.student-row input {
+  padding: 10px 8px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  text-align: center;
+  font-size: 14px;
+}
+
+.student-row .calc-name {
+  text-align: left;
+}
+
+.calc-total {
+  background-color: #f1f5f9 !important;
+  font-weight: 700;
+  color: var(--color-primary);
+  border-color: #94a3b8;
+}
+
+/* ====================== IMPORT SECTION ====================== */
+.import-section {
+  margin: var(--spacing-lg) 0;
+  padding: var(--spacing-lg);
+  border: 2px dashed var(--border-color);
+  border-radius: var(--border-radius);
+  background: #f8fafc;
+  text-align: center;
+}
+
+.import-section h3 {
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-sm);
+  border-bottom: none;
+}
+
+.import-description {
+  color: var(--color-text-muted);
+  margin-bottom: var(--spacing-md);
+}
+
+/* ====================== BUTTONS ====================== */
+button {
+  margin-top: 12px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.primary-btn {
+  background: var(--color-primary);
+  color: white;
+}
+.primary-btn:hover {
+  background: var(--color-primary-hover);
+  transform: translateY(-1px);
+}
+
+.secondary-btn {
+  background: var(--color-secondary);
+  color: white;
+}
+
+.danger-btn {
+  background: var(--color-danger);
+  color: white;
+}
+
+/* Data Tables */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: var(--spacing-md);
+}
+
+.data-table th,
+.data-table td {
+  border: 1px solid var(--border-color);
+  padding: 12px;
+  text-align: left;
+}
+
+.data-table th {
+  background-color: #f1f5f9;
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.report-input-cell {
+  width: 75px;
+  text-align: center;
+}
+
+/* Behavior */
+.behavior-inputs-container {
+  margin-top: var(--spacing-lg);
+  padding-top: var(--spacing-lg);
+  border-top: 2px solid var(--border-color);
+}
+
+.behavior-grid-inputs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--spacing-md);
+}
+
+/* PWA Install Banner */
+.install-banner {
+  background: var(--color-primary);
+  color: var(--color-text-light);
+  padding: var(--spacing-md);
+  margin: var(--spacing-md) 0;
+  border-radius: var(--border-radius);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  box-shadow: var(--shadow-subtle);
+}
+
+.install-banner p {
+  margin: 0;
+  flex: 1;
+  font-weight: bold;
+}
+
+.install-banner button {
+  white-space: nowrap;
+}
+
+/* ====================== MOBILE RESPONSIVENESS ====================== */
+@media (max-width: 768px) {
+  .screen-container {
+    padding: var(--spacing-md);
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-md);
+  }
+
+  .tabs {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .calc-grid-header,
+  .student-row {
+    grid-template-columns: 2.5fr 1fr 1fr 1fr 1fr 1.4fr 1.4fr 40px;
+    font-size: 12px;
+  }
+
+  .student-row input {
+    padding: 8px 6px;
+    font-size: 13px;
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .report-input-cell {
+    min-width: 60px;
+    padding: 10px 4px;
+  }
+
+  .import-section {
+    padding: var(--spacing-md);
+  }
+}
+
+/* ==========================================================
+   STRICT PRINT STYLES & REPORT CARD LAYOUT
+   (UNTOUCHED - EXACTLY AS YOU HAD IT)
+   ========================================================== */
+.printable-report {
+  background: white;
+  padding: 40px;
+  color: black;
+}
+.report-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Uppercase enforcement for labels */
+.report-bio-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 15px;
+  border: 2px solid black;
+  padding: 10px;
+}
+.report-bio-grid div {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 14px;
+}
+.report-bio-grid span {
+  text-transform: none;
+  font-weight: normal;
+  border-bottom: 1px solid black;
+  padding: 0 5px;
+}
+
+/* Academic Record Header */
+.academic-record-header {
+  text-align: center;
+  font-weight: bold;
+  background: #eeeeee;
+  border: 1px solid black;
+  border-bottom: none;
+  padding: 5px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.report-grades-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.report-grades-table th,
+.report-grades-table td {
+  border: 1px solid black;
+  padding: 4px;
+  text-align: center;
+  font-size: 14px;
+}
+.report-grades-table th {
+  background-color: #f2f2f2;
+}
+
+/* Footer Dual Tables (Behavior & Ratings) */
+.footer-tables-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  gap: 15px;
+}
+.behavior-box,
+.rating-keys-box {
+  flex: 1;
+}
+.behavior-box table,
+.rating-keys-box table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.behavior-box th,
+.behavior-box td,
+.rating-keys-box th,
+.rating-keys-box td {
+  border: 1px solid black;
+  padding: 4px;
+  font-size: 13px;
+  text-align: left;
+}
+.behavior-box th,
+.rating-keys-box th {
+  background: #f2f2f2;
+  text-align: center;
+  text-transform: uppercase;
+}
+.final-totals {
+  font-weight: bold;
+  background: #eeeeee;
+}
+
+.remarks-section {
+  margin-top: 20px;
+  font-size: 14px;
+  line-height: 2;
+}
+
+.print-controls {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+/* Fix for the Printed School Headers */
+.school-details h1,
+.school-details h2,
+.school-details h3 {
+  border-bottom: none;
+  padding-bottom: 0;
+  color: black;
+}
+
+.school-details h1 {
+  font-size: 22px;
+  margin-bottom: 4px;
+  font-weight: bold;
+}
+
+.school-details h3 {
+  font-size: 16px;
+  margin-bottom: 4px;
+  font-weight: bold;
+}
+
+.school-details h2 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+/* ==========================================================
+   STRICT PRINT STYLES (Guaranteed Single A4 Page Fit)
+   ========================================================== */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 0.5cm 1cm;
+  }
+
+  body {
+    background: white;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    font-size: 12px !important;
+    line-height: 1.2 !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+  .screen-container {
+    padding: 0;
+    margin: 0;
+    max-width: none;
+  }
+  .printable-report {
+    padding: 0;
+    color: black;
+  }
+
+  /* Compress Headers */
+  .school-details h1 {
+    font-size: 18px;
+    margin-bottom: 2px;
+  }
+
+  .school-details h3 {
+    font-size: 13px;
+    margin-bottom: 2px;
+  }
+
+  .school-details h2 {
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+  .report-header {
+    margin-bottom: 5px;
+  }
+
+  /* Compress Bio Grid */
+  .report-bio-grid {
+    margin-bottom: 20px;
+    padding: 5px;
+    gap: 5px 10px;
+  }
+
+  .report-bio-grid div {
+    font-size: 11px;
+  }
+
+  /* Compress Academic Record Table */
+  .academic-record-header {
+    font-size: 15px;
+    padding: 4px;
+    margin-bottom: 0;
+  }
+  .report-grades-table th,
+  .report-grades-table td {
+    padding: 2px 4px !important;
+    font-size: 11px;
+    border: 1px solid black !important;
+  }
+
+  /* Compress Footer Tables */
+  .footer-tables-container {
+    margin-top: 20px;
+    gap: 10px;
+  }
+
+  .behavior-box th,
+  .behavior-box td,
+  .rating-keys-box th,
+  .rating-keys-box td {
+    padding: 2px 4px !important;
+    font-size: 10px;
+  }
+
+  /* Compress Remarks Section */
+  .remarks-section {
+    margin-top: 60px;
+    font-size: 12px;
+    line-height: 1.8;
+  }
+  .remarks-section p {
+    margin-bottom: 4px;
+  }
+
+  * {
+    font-family: "Times New Roman", Times, serif !important;
+    color: black !important;
+  }
+}
