@@ -57,6 +57,11 @@ function normalizeName(name) {
   return name ? name.toLowerCase().trim().replace(/\s+/g, " ") : "";
 }
 
+// Lax subject matching (removes dots, spaces, punctuation)
+function normalizeSubject(subject) {
+  return subject ? subject.toLowerCase().replace(/[^a-z0-9]/g, "") : "";
+}
+
 function getSubjectFilename(subjectName, className = "") {
   let name = subjectName.trim();
   if (className) name += ` - ${className.trim()}`;
@@ -245,20 +250,14 @@ function loadCalculatorData() {
   }
 }
 
-// ====================== CLEAR SUBJECT DATA (FIXED & WORKING) ======================
+// ====================== CLEAR SUBJECT DATA ======================
 document.getElementById("clear-subject-data").addEventListener("click", () => {
   if (confirm("Are you sure you want to clear this subject's data?")) {
-    // Clear localStorage
     localStorage.removeItem("scoreSort_SubjectData");
-
-    // Reset UI completely
     document.getElementById("subject-name").value = "";
     studentInputsContainer.innerHTML = "";
     document.getElementById("calculator-results").classList.add("hidden");
-
-    // Add one fresh empty row
     addStudentRow();
-
     alert("Subject data cleared successfully.");
   }
 });
@@ -351,7 +350,7 @@ document.getElementById("export-subject-btn").addEventListener("click", () => {
   );
 });
 
-// ====================== IMPORT SUBJECT SHEETS ======================
+// ====================== IMPORT SUBJECT SHEETS (Lax Student + Lax Subject) ======================
 const importInput = document.getElementById("import-subject-files");
 const importBtn = document.getElementById("import-subject-btn");
 const importStatus = document.getElementById("import-status");
@@ -363,21 +362,21 @@ importBtn.addEventListener("click", () => {
     return;
   }
 
-  const studentName = normalizeName(
-    document.getElementById("bio-name").value.trim(),
-  );
-  if (!studentName) {
+  const rawStudentName = document.getElementById("bio-name").value.trim();
+  if (!rawStudentName) {
     alert(
       "Please enter the Student Name in the Bio Data section first, then import.",
     );
     return;
   }
 
+  const targetStudent = normalizeName(rawStudentName);
   let importedCount = 0;
   const mergedStudents = new Map();
 
   Array.from(files).forEach((file) => {
     const reader = new FileReader();
+
     reader.onload = function (e) {
       try {
         const data = JSON.parse(e.target.result);
@@ -387,9 +386,11 @@ importBtn.addEventListener("click", () => {
           return;
         }
 
+        const normSubject = normalizeSubject(data.subjectName);
+
         data.students.forEach((student) => {
-          if (normalizeName(student.name) === studentName) {
-            mergedStudents.set(data.subjectName.toLowerCase(), {
+          if (normalizeName(student.name) === targetStudent) {
+            mergedStudents.set(normSubject, {
               ...student,
               subject: data.subjectName,
               classAvg: data.classAverage || "-",
@@ -412,6 +413,7 @@ importBtn.addEventListener("click", () => {
         );
       }
     };
+
     reader.readAsText(file);
   });
 });
@@ -424,7 +426,7 @@ function fillReportTableFromImports(mergedStudents) {
       const subjectCell = row.getAttribute("data-subject");
       if (
         !subjectCell ||
-        subjectCell.toLowerCase() !== studentData.subject.toLowerCase()
+        normalizeSubject(subjectCell) !== normalizeSubject(studentData.subject)
       )
         return;
 
@@ -444,11 +446,13 @@ function fillReportTableFromImports(mergedStudents) {
     });
   });
 
-  importStatus.innerHTML = `✅ Successfully filled data for the current student from ${Object.keys(mergedStudents).length} subject sheet(s)!`;
+  importStatus.innerHTML = `✅ Successfully merged <strong>${mergedStudents.size}</strong> student records from the imported sheet(s)!`;
 
   setTimeout(() => importStatus.classList.add("hidden"), 6500);
 
-  alert("Import successful!\nData has been filled for the selected student.");
+  alert(
+    `Import successful!\n\n${mergedStudents.size} student records have been merged across all subjects.`,
+  );
 }
 
 // --- TAB 2: REPORT GENERATOR ---
@@ -719,7 +723,8 @@ document.getElementById("dismiss-install").addEventListener("click", () => {
 // Register Service Worker
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("service-worker.js")
+    navigator.serviceWorker
+      .register("service-worker.js")
       .then((reg) => {
         console.log("Service Worker registered successfully", reg.scope);
       })
