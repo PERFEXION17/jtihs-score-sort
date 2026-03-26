@@ -54,6 +54,7 @@ const SSS_SUBJECTS = [
   "Accounting",
   "Economics",
   "Commerce",
+  "Marketing",
   "Agricultural Science",
   "Creative Art",
   "Computer Science",
