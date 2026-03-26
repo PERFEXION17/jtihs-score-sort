@@ -591,7 +591,8 @@ button {
   }
 
   * {
-    font-family: "Times New Roman", Times, serif !important;
+    /* font-family: "Times New Roman", Times, serif !important; */
+    font-family: var(--font-family-base);
     color: black !important;
   }
 }

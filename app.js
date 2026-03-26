@@ -11,25 +11,6 @@ const tabBtnReport = document.getElementById("tab-btn-report");
 const tabCalc = document.getElementById("tab-calculator");
 const tabReport = document.getElementById("tab-report");
 
-// Constants
-const SUBJECTS = [
-  "Mathematics",
-  "English",
-  "Civic Education",
-  "Physics",
-  "Chemistry",
-  "Biology",
-  "Geography",
-  "Accounting",
-  "Economics",
-  "Commerce",
-  "Agriculture",
-  "Creative Art",
-  "Computer",
-  "CRS",
-  "Government",
-];
-
 const BEHAVIORS = [
   "NEATNESS",
   "RELATIONSHIP WITH OTHERS",
@@ -46,7 +27,7 @@ const BEHAVIORS = [
 // Separate subject lists for JSS and SSS
 const JSS_SUBJECTS = [
   "Mathematics",
-  "English",
+  "English Language",
   "Basic Science",
   "Basic Technology",
   "Civic Education",
