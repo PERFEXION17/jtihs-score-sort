@@ -1,5 +1,5 @@
 // 1. Bump the cache version to invalidate the old cache
-const CACHE_NAME = "jtihs-report-card-v2";
+const CACHE_NAME = "jtihs-report-card-v3";
 const urlsToCache = [
   "./",
   "index.html",
