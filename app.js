@@ -54,12 +54,12 @@ const SSS_SUBJECTS = [
   "Accounting",
   "Economics",
   "Commerce",
-  "Agriculture",
+  "Agricultural Science",
   "Creative Art",
-  "Computer",
+  "Computer Science",
   "CRS",
   "Government",
-  "Literature",
+  "Literature-in-English",
 ];
 
 // --- UTILITY FUNCTIONS ---
