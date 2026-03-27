@@ -87,6 +87,77 @@ function getSubjectFilename(subjectName, className = "") {
   return name.replace(/[^a-zA-Z0-9 -]/g, "") + ".json";
 }
 
+// Calculates how many edits (typos, swaps, missing letters) it takes to turn string 'a' into string 'b'
+function getSimilarityScore(a, b) {
+  if (!a || !b) return 0;
+  if (a === b) return 1;
+
+  const matrix = [];
+  for (let i = 0; i <= b.length; i++) matrix[i] = [i];
+  for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
+
+  for (let i = 1; i <= b.length; i++) {
+    for (let j = 1; j <= a.length; j++) {
+      let cost = b.charAt(i - 1) === a.charAt(j - 1) ? 0 : 1;
+      matrix[i][j] = Math.min(
+        matrix[i - 1][j - 1] + cost, // substitution
+        matrix[i][j - 1] + 1, // insertion
+        matrix[i - 1][j] + 1, // deletion
+      );
+      // Catch transposed letters (e.g., "jhon" vs "john")
+      if (
+        i > 1 &&
+        j > 1 &&
+        b.charAt(i - 1) === a.charAt(j - 2) &&
+        b.charAt(i - 2) === a.charAt(j - 1)
+      ) {
+        matrix[i][j] = Math.min(matrix[i][j], matrix[i - 2][j - 2] + cost);
+      }
+    }
+  }
+
+  const distance = matrix[b.length][a.length];
+  const maxLength = Math.max(a.length, b.length);
+  return (maxLength - distance) / maxLength; // Returns a percentage (0.0 to 1.0)
+}
+
+// The main fuzzy matching engine
+function isNameMatch(inputName, jsonName) {
+  if (!inputName || !jsonName) return false;
+
+  const inputTokens = normalizeName(inputName).split(" ");
+  let jsonTokens = normalizeName(jsonName).split(" ");
+
+  let matchedPairs = 0;
+  const matchThreshold = 0.7; // 70% similarity required per word
+
+  // Check each word the user typed against the words in the JSON file
+  for (const iToken of inputTokens) {
+    let bestScore = 0;
+    let bestIndex = -1;
+
+    for (let j = 0; j < jsonTokens.length; j++) {
+      const score = getSimilarityScore(iToken, jsonTokens[j]);
+      if (score > bestScore) {
+        bestScore = score;
+        bestIndex = j;
+      }
+    }
+
+    // If we found a 70%+ match, count it and remove it from the available JSON words so we don't double-count
+    if (bestScore >= matchThreshold && bestIndex !== -1) {
+      matchedPairs++;
+      jsonTokens.splice(bestIndex, 1);
+    }
+  }
+
+  // If both inputs have at least 2 words (e.g., First & Last name), we only require 2 words to match.
+  // If someone only provided 1 word, we require 1 match.
+  const requiredMatches = inputTokens.length === 1 ? 1 : 2;
+
+  return matchedPairs >= requiredMatches;
+}
+
 // Dynamic Class Title
 function updateClassTitle() {
   const classInput = document
@@ -379,7 +450,7 @@ document.getElementById("export-subject-btn").addEventListener("click", () => {
   );
 });
 
-// ====================== IMPORT SUBJECT SHEETS (Lax Student + Lax Subject) ======================
+// ====================== IMPORT SUBJECT SHEETS (Fuzzy Matching) ======================
 const importInput = document.getElementById("import-subject-files");
 const importBtn = document.getElementById("import-subject-btn");
 const importStatus = document.getElementById("import-status");
@@ -399,7 +470,6 @@ importBtn.addEventListener("click", () => {
     return;
   }
 
-  const targetStudent = normalizeName(rawStudentName);
   let importedCount = 0;
   const mergedStudents = new Map();
 
@@ -418,7 +488,8 @@ importBtn.addEventListener("click", () => {
         const normSubject = normalizeSubject(data.subjectName);
 
         data.students.forEach((student) => {
-          if (normalizeName(student.name) === targetStudent) {
+          // Implementing the new fuzzy match logic here
+          if (isNameMatch(rawStudentName, student.name)) {
             mergedStudents.set(normSubject, {
               ...student,
               subject: data.subjectName,
