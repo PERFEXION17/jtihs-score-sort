@@ -169,7 +169,7 @@ select:focus {
   text-align: center;
 }
 
-#subject-name{
+#subject-name {
   margin-bottom: 12px;
 }
 
@@ -357,7 +357,6 @@ button {
 
 /* ==========================================================
    STRICT PRINT STYLES & REPORT CARD LAYOUT
-   (UNTOUCHED - EXACTLY AS YOU HAD IT)
    ========================================================== */
 .printable-report {
   background: white;
@@ -523,9 +522,19 @@ button {
   }
 
   /* Compress Headers */
+  .school-details img {
+    width: 50px;
+  }
+
   .school-details h1 {
     font-size: 18px;
     margin-bottom: 2px;
+  }
+
+  .school-details p {
+    margin-bottom: 5px;
+    font-size: 10px;
+    font-style: italic;
   }
 
   .school-details h3 {
