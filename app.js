@@ -24,7 +24,6 @@ const BEHAVIORS = [
   "POLITENESS",
 ];
 
-// Separate subject lists for JSS and SSS
 const JSS_SUBJECTS = [
   "Mathematics",
   "English Language",
@@ -652,8 +651,23 @@ document.getElementById("generate-report-btn").addEventListener("click", () => {
   bioIds.forEach((id) => {
     const el = document.getElementById(`bio-${id}`);
     if (!el) return;
+
     let val = el.value;
-    if (id === "name") val = formatName(val);
+
+    if (id === "name") {
+      val = formatName(val);
+    }
+
+    // 2. NEW: Format Date if it's one of your date fields
+    const dateFields = ["term-ending", "next-term"];
+    if (dateFields.includes(id) && val) {
+      const dateObj = new Date(val);
+      // Check if valid date to avoid "Invalid Date" text
+      if (!isNaN(dateObj)) {
+        val = dateObj.toLocaleDateString("en-GB");
+      }
+    }
+
     const outEl = document.getElementById(`out-${id}`);
     if (outEl) outEl.innerText = val || "";
   });
